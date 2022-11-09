@@ -178,7 +178,7 @@ def main():
             build_yahoo_highest_options_sheet()
             build_cnn_trending_sheet()
             build_cnn_crypto_sheet()
-        time.sleep(10)
+            time.sleep(10)
 
 
 if __name__ == '__main__':
