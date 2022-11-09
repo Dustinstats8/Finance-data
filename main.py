@@ -6,6 +6,8 @@ from gspread_dataframe import set_with_dataframe
 from google.oauth2.service_account import Credentials
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
+from datetime import datetime
+import time
 
 # set user agent info to help with bot detectors on websites
 user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " \
@@ -13,8 +15,8 @@ user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36
 headers = {'User-Agent': user_agent}
 
 # to print full dataframe in console -
-#   with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-#       print(cnn_crypto_prices)
+#   with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+#       print(df)
 
 # authorize script with google service account credentials
 scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
@@ -164,10 +166,20 @@ def build_cnn_crypto_sheet():
 
 
 def main():
-    build_yahoo_trending_sheet()
-    build_yahoo_highest_options_sheet()
-    build_cnn_trending_sheet()
-    build_cnn_crypto_sheet()
+    # script will run indefinitely on repl.it
+    # set times for script to execute within US market hours
+    # datetime returns UTC so -5 hours for EST
+    while True:
+        now = datetime.now()
+        start_time = now.replace(hour=14, minute=30, second=0, microsecond=0)
+        end_time = now.replace(hour=21, minute=0, second=0, microsecond=0)
+        while start_time < now < end_time:
+            build_yahoo_trending_sheet()
+            build_yahoo_highest_options_sheet()
+            build_cnn_trending_sheet()
+            build_cnn_crypto_sheet()
+        else:
+            time.sleep(10)
 
 
 if __name__ == '__main__':
