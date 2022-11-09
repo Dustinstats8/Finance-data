@@ -48,7 +48,7 @@ def yahoo_trending_tickers():
             change_list.append(i.find('td', {'aria-label': 'Change'}).text)
             pChange_list.append(i.find('td', {'aria-label': '% Change'}).text)
         except AttributeError:
-            print('yahoo trending tickers None error')
+            print('')
 
     yahoo_trending_df = pd.DataFrame(list(zip(ticker_list, name_list, last_price_list, change_list, pChange_list)),
                                      columns=['Symbol', 'Company', 'Last Price', 'Change', '% Change'])
@@ -91,7 +91,7 @@ def yahoo_highest_options():
             volume_list.append(i.find('td', {'aria-label': 'Volume'}).text)
             interest_list.append(i.find('td', {'aria-label': 'Open Interest'}).text)
         except AttributeError:
-            print('yahoo options None error')
+            print('')
 
     yahoo_options_df = pd.DataFrame(list(zip(symbol_list, underlying_symbol_list, name_list, strike_list, exp_date_list,
                                              price_list, change_list, pChange_list, bid_list, ask_list, volume_list,
@@ -178,8 +178,7 @@ def main():
             build_yahoo_highest_options_sheet()
             build_cnn_trending_sheet()
             build_cnn_crypto_sheet()
-        else:
-            time.sleep(10)
+        time.sleep(10)
 
 
 if __name__ == '__main__':
